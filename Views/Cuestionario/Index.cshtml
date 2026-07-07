@@ -1,0 +1,310 @@
+﻿@model global::CuestionarioIFRP.Models.CuestionarioIFRP
+
+@{
+    Layout = "_CuestionarioLayout";
+}
+
+
+<div class="container mt-5">
+    <!-- Se agrega la etiqueta form apuntando a tu controlador -->
+    <form asp-controller="Cuestionario" asp-action="Guardar" method="post">
+        
+        <div class="card p-3 style-glass">
+            <div class="row mb-3">
+                <h2 class="text-center fw-bolder mt-5">CUESTIONARIO PARA IDENTIFICAR LOS FACTORES DE RIESGO PSICOSOCIAL 2026</h2>
+            </div>
+            <div class="col m-3">
+                <div class="row mb-2">
+                    <h4 class="text-primary">DATOS DEL TRABAJADOR</h4>
+                </div>
+                <div class="row mb-5">
+                    <h5 class="text-black">Información del trabajador</h5>
+                </div>
+
+                <!-- PREGUNTA 1 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">1.- Sexo</h6>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta1" id="sexoHombre" value="Hombre">
+                        <label class="form-check-label text-black" for="sexoHombre">Hombre</label>
+                    </div>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta1" id="sexoMujer" value="Mujer">
+                        <label class="form-check-label text-black" for="sexoMujer">Mujer</label>
+                    </div>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta1" id="sexoOtro" value="Otro">
+                        <label class="form-check-label text-black" for="sexoOtro">Otro</label>
+                    </div>
+                </div>
+
+                <!-- PREGUNTA 2 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">2.- Edad en años</h6>
+                    @foreach (var rango in new[] { "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70 o más" })
+                    {
+                        var idRango = "edad_" + rango.Replace(" ", "_").Replace("-", "_");
+                        <div class="form-check mb-2 ms-4">
+                            <input class="form-check-input" type="radio" name="Pregunta2" id="@idRango" value="@rango">
+                            <label class="form-check-label text-black" for="@idRango">@rango</label>
+                        </div>
+                    }
+                </div>
+
+                <!-- PREGUNTA 3 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">3.- Estado civil</h6>
+                    @foreach (var estado in new[] { "Casado", "Soltero", "Divorciado", "Unión libre", "Viudo" })
+                    {
+                        var idEstado = "civil_" + estado.Replace(" ", "_");
+                        <div class="form-check mb-2 ms-4">
+                            <input class="form-check-input" type="radio" name="Pregunta3" id="@idEstado" value="@estado">
+                            <label class="form-check-label text-black" for="@idEstado">@estado</label>
+                        </div>
+                    }
+                </div>
+
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">4.- Nivel de estudios</h6>
+                    <div class="col-12 ms-4 table-responsive">
+                        <table class="table table-borderless align-middle" style="max-width: 600px;">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-black fw-normal" style="width: 50%;"></th>
+                                    <th scope="col" class="text-center text-primary fw-bold" style="width: 25%;">Terminada</th>
+                                    <th scope="col" class="text-center text-primary fw-bold" style="width: 25%;">Incompleta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-black">Sin Formación</td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_sinFormacion" value="Terminada"></td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_sinFormacion" value="Incompleta"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black">Primaria</td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_primaria" value="Terminada"></td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_primaria" value="Incompleta"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black">Secundaria</td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_secundaria" value="Terminada"></td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_secundaria" value="Incompleta"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black">Preparatoria o bachillerato</td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_bachillerato" value="Terminada"></td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_bachillerato" value="Incompleta"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black">Técnico Superior</td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_tecnico" value="Terminada"></td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_tecnico" value="Incompleta"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black">Licenciatura</td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_licenciatura" value="Terminada"></td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_licenciatura" value="Incompleta"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black">Maestría</td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_maestria" value="Terminada"></td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_maestria" value="Incompleta"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-black">Doctorado</td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_doctorado" value="Terminada"></td>
+                                    <td class="text-center"><input class="form-check-input" type="radio" name="estudios_doctorado" value="Incompleta"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <!-- PREGUNTA 5 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">5.- Ocupación/Profesión/Puesto</h6>
+                    <div class="col-md-6 ms-4">
+                        <input type="text" class="form-control text-black" name="Pregunta5" id="txtOcupacion" placeholder="Escribe tu respuesta">
+                    </div>
+                </div>
+
+                <!-- PREGUNTA 6 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">6.- Departamento/Sección/Área</h6>
+                    @{
+                        var deptoId = 1;
+                        var deptos = new[] { "Mezclado / Extrusión", "Horno", "Calidad Insp/Safe Launch/Laboratorio", "Ensamble + Planeación", "Embarques", "Mantenimiento (Planta y Ensamble) / Kaizen", "TPS", "RH/EHS/Admin/Contabilidad", "Materiales (Inv., Partes de servicio, Planeación de inv.)", "Ingeniería", "Imp-Exp", "Gerencia" };
+                    }
+                    @foreach (var dep in deptos)
+                    {
+                        <div class="form-check mb-2 ms-4">
+                            <input class="form-check-input" type="radio" name="Pregunta6" id="dep_@deptoId" value="@dep">
+                            <label class="form-check-label text-black" for="dep_@deptoId">@dep</label>
+                        </div>
+                        deptoId++;
+                    }
+                </div>
+
+                <!-- PREGUNTA 7 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">7.- Tipo de puesto</h6>
+                    @foreach (var puesto in new[] { "Operativo", "Profesional o técnico", "Supervisor", "Gerente" })
+                    {
+                        var idPuesto = "puesto_" + puesto.Replace(" ", "_");
+                        <div class="form-check mb-2 ms-4">
+                            <input class="form-check-input" type="radio" name="Pregunta7" id="@idPuesto" value="@puesto">
+                            <label class="form-check-label text-black" for="@idPuesto">@puesto</label>
+                        </div>
+                    }
+                </div>
+
+                <!-- PREGUNTA 8 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">8.- Tipo de contratación</h6>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta8" id="contratoObra" value="Por obra o proyecto">
+                        <label class="form-check-label text-black" for="contratoObra">Por obra o proyecto</label>
+                    </div>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta8" id="contratoTemporal" value="Por tiempo determinado (temporal)">
+                        <label class="form-check-label text-black" for="contratoTemporal">Por tiempo determinado (temporal)</label>
+                    </div>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta8" id="contratoIndeterminado" value="Tiempo indeterminado">
+                        <label class="form-check-label text-black" for="contratoIndeterminado">Tiempo indeterminado</label>
+                    </div>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta8" id="contratoHonorarios" value="Honorarios">
+                        <label class="form-check-label text-black" for="contratoHonorarios">Honorarios</label>
+                    </div>
+                </div>
+
+                <!-- PREGUNTA 9 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">9.- Tipo de personal</h6>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta9" id="personalNinguno" value="Ninguno">
+                        <label class="form-check-label text-black" for="personalNinguno">Ninguno</label>
+                    </div>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta9" id="personalSindicalizado" value="Sindicalizado">
+                        <label class="form-check-label text-black" for="personalSindicalizado">Sindicalizado</label>
+                    </div>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta9" id="personalConfianza" value="Confianza">
+                        <label class="form-check-label text-black" for="personalConfianza">Confianza</label>
+                    </div>
+                </div>
+
+
+                <!-- PREGUNTA 10 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">10.- Tipo de jornada de trabajo</h6>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta10" id="jornadaNocturna" value="Fijo nocturno (entre las 20:00 y 06:00 hrs)">
+                        <label class="form-check-label text-black" for="jornadaNocturna">Fijo nocturno (entre las 20:00 y 06:00 hrs)</label>
+                    </div>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta10" id="jornadaDiurna" value="Fijo diurno (entre las 06:00 y 20:00 hrs)">
+                        <label class="form-check-label text-black" for="jornadaDiurna">Fijo diurno (entre las 06:00 y 20:00 hrs)</label>
+                    </div>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta10" id="jornadaMixta" value="Fijo mixto (combinación entre nocturno y diurno)">
+                        <label class="form-check-label text-black" for="jornadaMixta">Fijo mixto (combinación entre nocturno y diurno)</label>
+                    </div>
+                </div>
+
+
+                <!-- PREGUNTA 11 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">11.- Realiza rotación de turnos</h6>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta11" id="rotacionSi" value="Si">
+                        <label class="form-check-label text-black" for="rotacionSi">Sí</label>
+                    </div>
+                    <div class="form-check mb-2 ms-4">
+                        <input class="form-check-input" type="radio" name="Pregunta11" id="rotacionNo" value="No">
+                        <label class="form-check-label text-black" for="rotacionNo">No</label>
+                    </div>
+                </div>
+
+                <!-- PREGUNTA 12 -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">12.- Experiencia general (Años)</h6>
+                    <div class="col-md-6 ms-4">
+                        <input type="text" class="form-control text-black" name="Pregunta12" id="txtExperienciaAnios" placeholder="Escribe tu respuesta">
+                    </div>
+                </div>
+
+
+                <!-- PREGUNTA 13 Y CIERRE DEL FORMULARIO -->
+                <div class="row mb-4">
+                    <h6 class="text-black mb-3">13.- Tiempo en puesto actual</h6>
+                    @{
+                        var tiempos = new[] { "Menos de 6 meses", "Entre 6 meses y 1 año", "Entre 1 y 4 años", "Entre 5 y 9 años", "Entre 10 y 14 años", "Entre 15 y 19 años", "Entre 20 y 24 años", "25 años o más" };
+                        var tId = 1;
+                    }
+                    @foreach (var t in tiempos)
+                    {
+                        <div class="form-check mb-2 ms-4">
+                            <input class="form-check-input" type="radio" name="Pregunta13" id="tiempo_@tId" value="@t">
+                            <label class="form-check-label text-black" for="tiempo_@tId">@t</label>
+                        </div>
+                        tId++;
+                    }
+                </div>
+
+                <!-- BOTÓN DE ENVÍO -->
+                <div class="row mt-5 mb-3">
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-primary btn-lg px-5 fw-bold shadow-sm">
+                            Enviar Cuestionario
+                        </button>
+                    </div>
+                </div>
+
+            </div> <!-- Cierre col m-3 -->
+        </div> <!-- Cierre card -->
+    </form>
+</div> <!-- Cierre container -->
+
+<!-- MODAL DE CONFIRMACIÓN DE GUARDADO -->
+<div class="modal fade" id="modalExito" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" style="z-index: 1060;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg bg-white">
+            <div class="modal-body text-center p-5">
+                <div class="mb-4">
+                    <span class="display-3 text-success fw-bold">✓</span>
+                </div>
+                <h3 class="fw-bolder text-black mb-3">Cuestionario Guardado</h3>
+                <p class="text-dark mb-4 fs-5">
+                    El cuestionario se ha almacenado correctamente.
+                </p>
+                <button type="button" class="btn btn-success btn-lg px-5 fw-bold shadow-sm" data-bs-dismiss="modal">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPT CORREGIDO USANDO EL BOOTSTRAP LOCAL DE TU PROYECTO -->
+@if (ViewBag.MostrarModalExito != null && (bool)ViewBag.MostrarModalExito)
+{
+    <!-- Forzamos la carga del JavaScript de Bootstrap local que ya viene con la plantilla de .NET -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var modalEl = document.getElementById('modalExito');
+            if (modalEl) {
+                // Ejecución directa con la librería local ya cargada
+                var myModal = new bootstrap.Modal(modalEl);
+                myModal.show();
+            }
+        });
+    </script>
+}
+
