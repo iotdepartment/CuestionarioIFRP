@@ -5,11 +5,15 @@ namespace CuestionarioIFRP.Controllers
 {
     public class CuestionarioController : Controller
     {
-        private readonly global::CuestionarioIFRP.Models.AppDbContext _context;
+        private readonly global::CuestionarioIFRP.Models.AppDbContext _context;      // Conectado a la BD 'RH'
+        private readonly global::CuestionarioIFRP.Models.UserContext _userContext;  // Conectado a la BD 'TGRMX'
 
-        public CuestionarioController(global::CuestionarioIFRP.Models.AppDbContext context)
+        public CuestionarioController(
+            global::CuestionarioIFRP.Models.AppDbContext context,
+            global::CuestionarioIFRP.Models.UserContext userContext)
         {
             _context = context;
+            _userContext = userContext;
         }
 
         [HttpGet]
@@ -18,7 +22,6 @@ namespace CuestionarioIFRP.Controllers
             return View();
         }
 
-        // DEJA ÚNICAMENTE ESTE MÉTODO POST (Borra cualquier otra versión de "Guardar")
         [HttpPost]
         public IActionResult Guardar(global::CuestionarioIFRP.Models.CuestionarioIFRP cuestionario)
         {
@@ -54,10 +57,10 @@ namespace CuestionarioIFRP.Controllers
 
             if (ModelState.IsValid)
             {
+                // CORREGIDO: Guarda usando _context (Aprieta el gatillo directo en la BD 'RH')
                 _context.CuestionarioIFRP.Add(cuestionario);
                 _context.SaveChanges();
 
-                // Variable que detectará la vista para abrir el modal
                 ViewBag.MostrarModalExito = true;
 
                 return View("Index", new global::CuestionarioIFRP.Models.CuestionarioIFRP());
@@ -65,5 +68,50 @@ namespace CuestionarioIFRP.Controllers
             return View("Index", cuestionario);
         }
 
+        [HttpGet]
+        public IActionResult BuscarEmpleado(string filtro)
+        {
+            if (string.IsNullOrEmpty(filtro))
+            {
+                return Json(new List<object>());
+            }
+
+            filtro = filtro.Trim().ToLower();
+
+            try
+            {
+                List<global::CuestionarioIFRP.Models.rh4> listaEmpleados = new List<global::CuestionarioIFRP.Models.rh4>();
+
+                // CORREGIDO: Usa _userContext para realizar una consulta LINQ local y directa en la BD 'TGRMX'
+                if (int.TryParse(filtro, out int numeroEmpleado))
+                {
+                    listaEmpleados = _userContext.rh4
+                        .Where(e => e.EMPLEADO == numeroEmpleado)
+                        .Take(5)
+                        .ToList();
+                }
+                else
+                {
+                    listaEmpleados = _userContext.rh4
+                        .Where(e => e.NOMBRECOMPLETO != null && e.NOMBRECOMPLETO.ToLower().Contains(filtro))
+                        .Take(5)
+                        .ToList();
+                }
+
+                var resultado = listaEmpleados.Select(e => new
+                {
+                    numero = e.EMPLEADO,
+                    nombre = e.NOMBRECOMPLETO,
+                    puesto = e.PUESTO_DESCRIPCION
+                }).ToList();
+
+                return Json(resultado);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error en consulta nativa de TGRMX: " + ex.Message);
+                return StatusCode(500, "Error de comunicación con la base de datos de empleados.");
+            }
+        }
     }
 }

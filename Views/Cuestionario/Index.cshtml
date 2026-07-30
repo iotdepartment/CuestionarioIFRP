@@ -7,7 +7,7 @@
 
 <div class="container mt-5">
     <!-- Se agrega la etiqueta form apuntando a tu controlador -->
-    <form asp-controller="Cuestionario" asp-action="Guardar" method="post">
+    <form asp-controller="Cuestionario" asp-action="Guardar" method="post" class="needs-validation" novalidate id="formCuestionario">
         
         <div class="card p-3 style-glass">
             <div class="row mb-3">
@@ -17,6 +17,36 @@
                 <div class="row mb-2">
                     <h4 class="text-primary">DATOS DEL TRABAJADOR</h4>
                 </div>
+
+                <!-- CAJA ÚNICA DE BÚSQUEDA CON LISTA FLOTANTE -->
+                <div class="row mb-3 ms-4">
+                    <div class="col-md-9 position-relative">
+                        <!-- Importante: position-relative para contener la lista flotante -->
+                        <label class="form-label text-primary fw-bold">Buscar Empleado (Escribe Número o Nombre)</label>
+                        <input type="text" class="form-control text-black bg-light" id="txtBuscadorEmpleado"
+                               placeholder="Comienza a escribir el número o nombre del empleado..." autocomplete="off"
+                               onkeydown="if(event.key === 'Enter') { event.preventDefault(); }">
+
+                        <!-- Contenedor flotante para las coincidencias -->
+                        <ul id="listaCoincidencias" class="list-group position-absolute w-100 mt-1 shadow-lg d-none" style="z-index: 1050; max-height: 250px; overflow-y: auto;">
+                            <!-- Las coincidencias se inyectarán aquí con JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- CAMPOS QUE SE RELLENAN SE QUEDAN IGUAL -->
+                <div class="row mb-4 ms-4">
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label text-black fw-bold">Número de Empleado</label>
+                        <input type="text" class="form-control text-black" name="NumeroEmpleado" id="txtNumeroEmpleado" readonly required>
+                        <div class="invalid-feedback fw-bold">Debes buscar y seleccionar un empleado válido.</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-black fw-bold">Nombre Completo</label>
+                        <input type="text" class="form-control text-black" name="NombreEmpleado" id="txtNombreEmpleado" readonly required>
+                    </div>
+                </div>
+
                 <div class="row mb-5">
                     <h5 class="text-black">Información del trabajador</h5>
                 </div>
@@ -25,7 +55,7 @@
                 <div class="row mb-4">
                     <h6 class="text-black mb-3">1.- Sexo</h6>
                     <div class="form-check mb-2 ms-4">
-                        <input class="form-check-input" type="radio" name="Pregunta1" id="sexoHombre" value="Hombre">
+                        <input class="form-check-input" type="radio" name="Pregunta1" id="sexoHombre" value="Hombre" required>
                         <label class="form-check-label text-black" for="sexoHombre">Hombre</label>
                     </div>
                     <div class="form-check mb-2 ms-4">
@@ -45,7 +75,7 @@
                     {
                         var idRango = "edad_" + rango.Replace(" ", "_").Replace("-", "_");
                         <div class="form-check mb-2 ms-4">
-                            <input class="form-check-input" type="radio" name="Pregunta2" id="@idRango" value="@rango">
+                            <input class="form-check-input" type="radio" name="Pregunta2" id="@idRango" value="@rango" required>
                             <label class="form-check-label text-black" for="@idRango">@rango</label>
                         </div>
                     }
@@ -58,7 +88,7 @@
                     {
                         var idEstado = "civil_" + estado.Replace(" ", "_");
                         <div class="form-check mb-2 ms-4">
-                            <input class="form-check-input" type="radio" name="Pregunta3" id="@idEstado" value="@estado">
+                            <input class="form-check-input" type="radio" name="Pregunta3" id="@idEstado" value="@estado" required>
                             <label class="form-check-label text-black" for="@idEstado">@estado</label>
                         </div>
                     }
@@ -126,7 +156,9 @@
                 <div class="row mb-4">
                     <h6 class="text-black mb-3">5.- Ocupación/Profesión/Puesto</h6>
                     <div class="col-md-6 ms-4">
-                        <input type="text" class="form-control text-black" name="Pregunta5" id="txtOcupacion" placeholder="Escribe tu respuesta">
+                        <!-- En la pregunta 5 -->
+                        <input type="text" class="form-control text-black" name="Pregunta5" id="txtOcupacion" placeholder="Escribe tu respuesta" required>
+                        <div class="invalid-feedback">Este campo es obligatorio.</div>
                     </div>
                 </div>
 
@@ -140,7 +172,7 @@
                     @foreach (var dep in deptos)
                     {
                         <div class="form-check mb-2 ms-4">
-                            <input class="form-check-input" type="radio" name="Pregunta6" id="dep_@deptoId" value="@dep">
+                            <input class="form-check-input" type="radio" name="Pregunta6" id="dep_@deptoId" value="@dep" required>
                             <label class="form-check-label text-black" for="dep_@deptoId">@dep</label>
                         </div>
                         deptoId++;
@@ -154,7 +186,7 @@
                     {
                         var idPuesto = "puesto_" + puesto.Replace(" ", "_");
                         <div class="form-check mb-2 ms-4">
-                            <input class="form-check-input" type="radio" name="Pregunta7" id="@idPuesto" value="@puesto">
+                            <input class="form-check-input" type="radio" name="Pregunta7" id="@idPuesto" value="@puesto" required>
                             <label class="form-check-label text-black" for="@idPuesto">@puesto</label>
                         </div>
                     }
@@ -164,7 +196,7 @@
                 <div class="row mb-4">
                     <h6 class="text-black mb-3">8.- Tipo de contratación</h6>
                     <div class="form-check mb-2 ms-4">
-                        <input class="form-check-input" type="radio" name="Pregunta8" id="contratoObra" value="Por obra o proyecto">
+                        <input class="form-check-input" type="radio" name="Pregunta8" id="contratoObra" value="Por obra o proyecto" required>
                         <label class="form-check-label text-black" for="contratoObra">Por obra o proyecto</label>
                     </div>
                     <div class="form-check mb-2 ms-4">
@@ -185,7 +217,7 @@
                 <div class="row mb-4">
                     <h6 class="text-black mb-3">9.- Tipo de personal</h6>
                     <div class="form-check mb-2 ms-4">
-                        <input class="form-check-input" type="radio" name="Pregunta9" id="personalNinguno" value="Ninguno">
+                        <input class="form-check-input" type="radio" name="Pregunta9" id="personalNinguno" value="Ninguno" required>
                         <label class="form-check-label text-black" for="personalNinguno">Ninguno</label>
                     </div>
                     <div class="form-check mb-2 ms-4">
@@ -203,7 +235,7 @@
                 <div class="row mb-4">
                     <h6 class="text-black mb-3">10.- Tipo de jornada de trabajo</h6>
                     <div class="form-check mb-2 ms-4">
-                        <input class="form-check-input" type="radio" name="Pregunta10" id="jornadaNocturna" value="Fijo nocturno (entre las 20:00 y 06:00 hrs)">
+                        <input class="form-check-input" type="radio" name="Pregunta10" id="jornadaNocturna" value="Fijo nocturno (entre las 20:00 y 06:00 hrs)" required>
                         <label class="form-check-label text-black" for="jornadaNocturna">Fijo nocturno (entre las 20:00 y 06:00 hrs)</label>
                     </div>
                     <div class="form-check mb-2 ms-4">
@@ -221,7 +253,7 @@
                 <div class="row mb-4">
                     <h6 class="text-black mb-3">11.- Realiza rotación de turnos</h6>
                     <div class="form-check mb-2 ms-4">
-                        <input class="form-check-input" type="radio" name="Pregunta11" id="rotacionSi" value="Si">
+                        <input class="form-check-input" type="radio" name="Pregunta11" id="rotacionSi" value="Si" required>
                         <label class="form-check-label text-black" for="rotacionSi">Sí</label>
                     </div>
                     <div class="form-check mb-2 ms-4">
@@ -234,7 +266,8 @@
                 <div class="row mb-4">
                     <h6 class="text-black mb-3">12.- Experiencia general (Años)</h6>
                     <div class="col-md-6 ms-4">
-                        <input type="text" class="form-control text-black" name="Pregunta12" id="txtExperienciaAnios" placeholder="Escribe tu respuesta">
+                        <input type="text" class="form-control text-black" name="Pregunta12" id="txtExperienciaAnios" placeholder="Escribe tu respuesta" required>
+                        <div class="invalid-feedback">Por favor, escribe tus años de experiencia.</div>
                     </div>
                 </div>
 
@@ -249,7 +282,7 @@
                     @foreach (var t in tiempos)
                     {
                         <div class="form-check mb-2 ms-4">
-                            <input class="form-check-input" type="radio" name="Pregunta13" id="tiempo_@tId" value="@t">
+                            <input class="form-check-input" type="radio" name="Pregunta13" id="tiempo_@tId" value="@t" required>
                             <label class="form-check-label text-black" for="tiempo_@tId">@t</label>
                         </div>
                         tId++;
@@ -290,21 +323,154 @@
     </div>
 </div>
 
-<!-- SCRIPT CORREGIDO USANDO EL BOOTSTRAP LOCAL DE TU PROYECTO -->
+<!-- CONTENEDOR PARA EL MODAL DE ÉXITO (Se activa tras guardar) -->
 @if (ViewBag.MostrarModalExito != null && (bool)ViewBag.MostrarModalExito)
 {
-    <!-- Forzamos la carga del JavaScript de Bootstrap local que ya viene con la plantilla de .NET -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var modalEl = document.getElementById('modalExito');
             if (modalEl) {
-                // Ejecución directa con la librería local ya cargada
                 var myModal = new bootstrap.Modal(modalEl);
                 myModal.show();
             }
         });
     </script>
 }
+
+<script>
+    (function() {
+        function iniciarBuscador() {
+            console.log("Sistema de búsqueda acoplado y listo.");
+
+            const txtBuscador = document.getElementById("txtBuscadorEmpleado");
+            const txtNumero = document.getElementById("txtNumeroEmpleado");
+            const txtNombre = document.getElementById("txtNombreEmpleado");
+            const listaCoincidencias = document.getElementById("listaCoincidencias");
+            const txtOcupacion = document.getElementById("txtOcupacion"); // Pregunta 5
+
+            if (!txtBuscador || !txtNumero || !txtNombre || !listaCoincidencias) {
+                console.error("Error: Faltan elementos en el HTML. Verifica los IDs.");
+                return;
+            }
+
+            let temporizadorBusqueda;
+
+            function ejecutarBuscador() {
+                let valorFiltro = txtBuscador.value.trim();
+
+                if (valorFiltro.length < 2) {
+                    listaCoincidencias.innerHTML = "";
+                    listaCoincidencias.classList.add("d-none");
+                    return;
+                }
+
+                let urlTarget = "/Cuestionario/BuscarEmpleado?filtro=" + encodeURIComponent(valorFiltro);
+
+                fetch(urlTarget)
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        if (data && data.error_real) {
+                            console.error("Error de backend:", data.error_real);
+                            return;
+                        }
+
+                        listaCoincidencias.innerHTML = "";
+
+                        if (data && Array.isArray(data) && data.length > 0) {
+                            data.forEach(function(empleado) {
+                                // Mapeo seguro: lee tanto la versión limpia del controlador como mayúsculas nativas
+                                let numEmp = empleado.numero || empleado.EMPLEADO || "";
+                                let nomEmp = empleado.nombre || empleado.NOMBRECOMPLETO || "";
+                                let puestoEmp = empleado.puesto || empleado.PUESTO_DESCRIPCION || "";
+
+                                let itemLista = document.createElement("button");
+                                itemLista.type = "button";
+                                itemLista.className = "list-group-item list-group-item-action text-start text-black py-2 border-bottom";
+                                itemLista.innerHTML = `<strong>${numEmp}</strong> - ${nomEmp}`;
+
+                                // EVENTO CLIC: Al seleccionar el empleado de la lista flotante
+                                itemLista.addEventListener("click", function() {
+                                    // Rellenamos los campos de texto del formulario con los datos reales
+                                    txtNumero.value = numEmp;
+                                    txtNombre.value = nomEmp;
+                                    txtBuscador.value = nomEmp;
+
+                                    // Rellenamos automáticamente el puesto si el campo existe
+                                    if (txtOcupacion) {
+                                        txtOcupacion.value = puestoEmp;
+                                    }
+
+                                    listaCoincidencias.innerHTML = "";
+                                    listaCoincidencias.classList.add("d-none");
+                                    console.log("Empleado asignado:", nomEmp);
+                                });
+
+                                listaCoincidencias.appendChild(itemLista);
+                            });
+
+                            listaCoincidencias.classList.remove("d-none");
+                        } else {
+                            listaCoincidencias.classList.add("d-none");
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error("Error de red:", error);
+                    });
+            }
+
+            txtBuscador.oninput = function() {
+                clearTimeout(temporizadorBusqueda);
+                temporizadorBusqueda = setTimeout(ejecutarBuscador, 300);
+            };
+
+            document.addEventListener("click", function(e) {
+                if (e.target !== txtBuscador && e.target !== listaCoincidencias) {
+                    listaCoincidencias.classList.add("d-none");
+                }
+            });
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", iniciarBuscador);
+        } else {
+            iniciarBuscador();
+        }
+    })();
+</script>
+<!-- SCRIPT DE VALIDACIÓN DE FORMULARIO COMPLETO -->
+<script>
+    (function () {
+        'use strict'
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Obtenemos el formulario configurado con la clase de validación
+            var form = document.getElementById('formCuestionario');
+            if (!form) return;
+
+            form.addEventListener('submit', function (event) {
+                // Validación especial para la tabla de la Pregunta 4 (Nivel de estudios)
+                // Nos aseguramos de que al menos una fila haya sido contestada si es requerido en tu lógica,
+                // o Bootstrap validará individualmente cada grupo de radio buttons marcados como required.
+
+                if (!form.checkValidity()) {
+                    event.preventDefault(); // Detiene por completo el envío del formulario
+                    event.stopPropagation(); // Evita que el evento burbujee
+
+                    // Alerta elegante de aviso al usuario
+                    alert("⚠️ Por favor, responde todas las preguntas del cuestionario antes de enviar.");
+
+                    // Hacemos scroll automático hacia arriba para que el usuario vea dónde empezó el error
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+                // Agrega la clase de Bootstrap que activa los bordes verdes (correcto) o rojos (inválido)
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+
 

@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
         public DateTime? Fecha { get; set; }
+        public string? NumeroEmpleado { get; set; }
+        public string? NombreEmpleado { get; set; }
         public string? Pregunta1 { get; set; }
         public string? Pregunta2 { get; set; }
         public string? Pregunta3 { get; set; }
